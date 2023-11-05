@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Minesweeper</title>
+</head>
+<body class="container">
+    <header class="header">
+        <h1 class="title">MINESWEEPER</h1>
+        <!-- <div class="theme-change">
+            <button class="theme" id="theme">
+        </div> -->
+    </header>
+
+    <main class="main-content">
+        <div class="top-menu">
+            <div id="counter" class="counter"></div>
+            <div id="center-buttons">
+                <select id="select-gamemode" class="select-gamemode">
+                    <option value="easy">easy</option>
+                    <option value="normal" selected="true">normal</option>
+                    <option value="hard">hard</option>
+                </select>
+                <button onclick="start()" id="start-button" class="start-button">start</button>
+            </div>
+            <!-- <lable id="safe" class="safe">
+                <input id="safe-start" type="checkbox">
+                Safe Start
+            </lable> -->
+        </div>
+
+        <div class="center">
+            <div class="field" id="field"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
