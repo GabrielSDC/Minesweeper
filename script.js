@@ -26,6 +26,7 @@ var gamemode;
 var emptyCells;
 // var rightclick;
 
+
 start();
 
 function start() {
@@ -53,7 +54,6 @@ function generateField() {
     var field = document.getElementById("field");
     var counter = document.getElementById("counter");
     var lines = "";
-    var cell;
 
     for(var i = 0; i < gamemode.height; i++) {
         lines += "<div class='line'>";
@@ -69,15 +69,13 @@ function generateField() {
 }
 
 function generateMines() {
-    var x, y; 
-    var cell, idCell;
     var i = 0;
     
     while(i < gamemode.totalMines) {
-        x = parseInt(Math.random() * gamemode.width);
-        y = parseInt(Math.random() * gamemode.height);
-        idCell = x + "," + y;
-        cell = document.getElementById(idCell);
+        const x = parseInt(Math.random() * gamemode.width);
+        const y = parseInt(Math.random() * gamemode.height);
+        const idCell = x + "," + y;
+        const cell = document.getElementById(idCell);
         // console.log(idCell);
 
         if(cell.value != "mine") {
@@ -90,15 +88,14 @@ function generateMines() {
 
 //determines the number of mines around each cell
 function numAround(x, y) {
-    var sideCell;
+    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+            if(i === y && j === x) continue;
 
-    for(var i = y - 1; i <= y + 1; i++) {
-        for(var j = x - 1; j <= x + 1; j++) {
-            if(j >= 0 && j < gamemode.width && i >= 0 && i < gamemode.height) {
-                sideCell = document.getElementById(j + "," + i);
-                if(sideCell.value != "mine")
-                    sideCell.value = parseInt(sideCell.value) + 1;
-            }
+            // console.log(x + "," + y + " -> " + j + "," + i);
+            const sideCell = document.getElementById(j + "," + i);
+            if(sideCell.value != "mine")
+                sideCell.value = parseInt(sideCell.value) + 1;
         }
     }
 }
@@ -161,54 +158,26 @@ function showmine(i, j, newClass) {
     cell.onmousedown = start;
 }
 
-function findColor(num) {
-    var color;
+const colors = ["#E5E8E8", "#2874A6", "#239B56",
+                "#B03A2E", "#6C3483", "#F1C40F", 
+                "#3498DB", "#1C2833", "#641E16"]
 
-    switch(num) {
-        case "0":
-            color = "#E5E8E8";
-            break;
-        case "1":
-            color = "#2874A6";
-            break;
-        case "2":
-            color = "#239B56";
-            break;
-        case "3":
-            color = "#B03A2E";
-            break;
-        case "4":
-            color = "#6C3483";
-            break;
-        case "5":
-            color = "#F1C40F";
-            break;
-        case "6":
-            color = "#3498DB";
-            break;
-        case "7":
-            color = "#1C2833";
-            break;
-        case "8":
-            color = "#641E16";
-            break;
-        default:
-            finish("lose");
-    }
-    return color;
+function findColor(num) {
+    const i = parseInt(num);
+
+    if(i < 0 || i > 8)
+        finish("lose");
+
+    return colors[i];
 }
 
 //clean all the adjecent blank cells
 function cleanAround(x, y) {
-    var sideCell;
-
-    for(var i = y - 1; i <= y + 1; i++) {
-        for(var j = x - 1; j <= x + 1; j++) {
-            if(j >= 0 && j < gamemode.width && i >= 0 && i < gamemode.height) {
-                sideCell = document.getElementById(j + "," + i);
-                if(sideCell.title != "pressed" && sideCell.title != "flagged")
-                    pressCell(j, i);
-            }
+    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+            const sideCell = document.getElementById(j + "," + i);
+            if(sideCell.title == "none")
+                pressCell(j, i);
         }
     }
 }
@@ -232,13 +201,11 @@ function checkFlags(x, y) {
     var sideCell;
     var flagsAround = 0;
 
-    for(var i = y - 1; i <= y + 1; i++) {
-        for(var j = x - 1; j <= x + 1; j++) {
-            if(j >= 0 && j < gamemode.width && i >= 0 && i < gamemode.height) {
-                sideCell = document.getElementById(j + "," + i);
-                if(sideCell.title == "flagged")
-                    flagsAround++;
-            }
+    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+            sideCell = document.getElementById(j + "," + i);
+            if(sideCell.title == "flagged")
+                flagsAround++;
         }
     }
 
@@ -248,22 +215,23 @@ function checkFlags(x, y) {
 
 document.getElementById("field").addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    cell = document.getElementById(e.target.id);
+    
+    const cell = document.getElementById(e.target.id);
     console.log(cell.title);
     
-    if(cell.title != "pressed"){
-        if(cell.title == "none") {
-            cell.title = "flagged";
-            counter.innerHTML--;
-            cell.disabled = true;
-        }
-        else if(cell.title == "flagged") {
-            cell.title = "none";
-            counter.innerHTML++;
-            cell.disabled = false;
-        }
+    if(cell.title == "pressed")
+        return;
 
-        cell.classList.toggle("flagged");
-        console.log(cell.className);
+    if(cell.title == "none") {
+        cell.title = "flagged";
+        counter.innerHTML--;
     }
+    else {
+        cell.title = "none";
+        counter.innerHTML++;
+    }
+
+    cell.disabled = !cell.disabled;
+    cell.classList.toggle("flagged");
+    console.log(cell.className);
 });
