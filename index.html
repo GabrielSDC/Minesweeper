@@ -8,10 +8,7 @@
 </head>
 <body class="container">
     <header class="header">
-        <h1 class="title">MINESWEEPER</h1>
-        <!-- <div class="theme-change">
-            <button class="theme" id="theme">
-        </div> -->
+        <h1 class="title">MINESWEEPER</h1> 
     </header>
 
     <main class="main-content">
@@ -23,19 +20,17 @@
                     <option value="normal" selected="true">normal</option>
                     <option value="hard">hard</option>
                 </select>
-                <button onclick="start()" id="start-button" class="start-button">start</button>
+                <button onclick="setupGame()" id="start-button" class="start-button">start</button>
             </div>
-            <!-- <lable id="safe" class="safe">
-                <input id="safe-start" type="checkbox">
-                Safe Start
-            </lable> -->
         </div>
 
         <div class="center">
             <div class="field" id="field"></div>
         </div>
     </main>
-
-    <script src="script.js"></script>
+    <footer id="footer">
+        <a id="github" href="https://github.com/GabrielSDC">by Gabriel Santos</a>
+    </footer>
+    <script src="script.js" ></script>
 </body>
 </html>
