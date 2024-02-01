@@ -1,37 +1,53 @@
-var easy = {
+let easy = {
     height: 8,
     width: 10,
-    totalMines: 10,
-    sizeCell: 30,
-    sizeFont: 20
+    totalMines: 10
 };
 
-var normal = {
+let normal = {
     height: 14,
     width: 18,
-    totalMines: 40,
-    sizeCell: 24,
-    sizeFont: 17
+    totalMines: 40
 };
 
-var hard = {
-    height: 20,
-    width: 24,
-    totalMines: 99,
-    sizeCell: 20,
-    sizeFont: 14
+let hard = {
+    height: 14,
+    width: 32,
+    totalMines: 99
 };
 
-var gamemode;
-var emptyCells;
-// var rightclick;
+let gamemode = normal;
 
+let emptyCells;
 
-start();
+window.onload = () => {
+    document.getElementById("field").addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        
+        const cell = document.getElementById(e.target.id);
+        
+        if(cell.title == "pressed")
+            return;
+    
+        if(cell.title == "none") {
+            cell.title = "flagged";
+            counter.innerHTML--;
+        }
+        else {
+            cell.title = "none";
+            counter.innerHTML++;
+        }
+    
+        cell.disabled = !cell.disabled;
+        cell.classList.toggle("flagged");
+    });
 
-function start() {
-    var select = document.getElementById("select-gamemode");
-    var option = select.options[select.selectedIndex].value;
+    setupGame();
+};
+
+function setupGame() {
+    const select = document.getElementById("select-gamemode");
+    const option = select.options[select.selectedIndex].value;
 
     switch(option) {
         case "easy":
@@ -47,18 +63,18 @@ function start() {
 
     emptyCells = gamemode.height * gamemode.width - gamemode.totalMines;
     generateField();
-    // solve();
 }
 
 function generateField() {
-    var field = document.getElementById("field");
-    var counter = document.getElementById("counter");
-    var lines = "";
+    const field = document.getElementById("field");
+    const counter = document.getElementById("counter");
+    let lines = "";
 
-    for(var i = 0; i < gamemode.height; i++) {
+    for(let i = 0; i < gamemode.height; i++) {
         lines += "<div class='line'>";
-        for(var j = 0; j < gamemode.width; j++) {
-            lines += "<button id='"+j+","+i+"' onclick='pressCell("+j+","+i+")' value='0' title='none' class='cell' style='width:"+gamemode.sizeCell+"px;height:"+gamemode.sizeCell+"px;font-size:"+gamemode.sizeFont+"px;'>";
+        for(let j = 0; j < gamemode.width; j++) {
+            const id = j+","+i;
+            lines += `<button id='${id}' onclick='pressCell(${id})' value='0' title='none' class='cell'>`;
         }
         lines += "</div>";
     }
@@ -69,14 +85,13 @@ function generateField() {
 }
 
 function generateMines() {
-    var i = 0;
+    let i = 0;
     
     while(i < gamemode.totalMines) {
         const x = parseInt(Math.random() * gamemode.width);
         const y = parseInt(Math.random() * gamemode.height);
         const idCell = x + "," + y;
         const cell = document.getElementById(idCell);
-        // console.log(idCell);
 
         if(cell.value != "mine") {
             cell.value = "mine";
@@ -86,38 +101,35 @@ function generateMines() {
     }
 }
 
-//determines the number of mines around each cell
 function numAround(x, y) {
-    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
-        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+    for(let i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(let j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
             if(i === y && j === x) continue;
 
-            // console.log(x + "," + y + " -> " + j + "," + i);
             const sideCell = document.getElementById(j + "," + i);
-            if(sideCell.value != "mine")
-                sideCell.value = parseInt(sideCell.value) + 1;
+            if(sideCell.value == "mine") continue;
+
+            sideCell.value = parseInt(sideCell.value) + 1;
         }
     }
 }
 
-
 function pressCell(x, y) {
-    var idCell = x + "," + y;
-    var pressedCell = document.getElementById(idCell);
-    var color;
+    const idCell = x + "," + y;
+    const pressedCell = document.getElementById(idCell);
 
     if(pressedCell.value == "mine")
         finish("lose");
     else if(pressedCell.title == "pressed")
         checkFlags(x, y);
     else if(pressedCell.title == "none") {
-        color = findColor(pressedCell.value);
+        const color = findColor(pressedCell.value);
         console.log(pressedCell.value);
 
         pressedCell.classList.replace("cell", "pressed");
 
         if(pressedCell.value > 0)
-            pressedCell.innerHTML = "<p style='color:" + color + ";'>" + pressedCell.value + "</p>"; 
+            pressedCell.innerHTML = `<p style='color:${color};'>${pressedCell.value}</p>`; 
         
         pressedCell.title = "pressed";
         emptyCells--;
@@ -131,9 +143,7 @@ function pressCell(x, y) {
 }
 
 function finish(end) {
-    console.log("bye bitch");
-    var newClass = "";
-
+    let newClass;
     if(end == "lose") {
         newClass = "mined";
     }
@@ -142,20 +152,20 @@ function finish(end) {
         alert("You win!");
     }
 
-    for(var i = 0; i < gamemode.height; i++) {
-        for(var j = 0; j < gamemode.width; j++) {
-            showmine(i, j, newClass);
+    for(let i = 0; i < gamemode.height; i++) {
+        for(let j = 0; j < gamemode.width; j++) {
+            showMines(i, j, newClass);
         }
     }
 }
 
-function showmine(i, j, newClass) {
-    var cell = document.getElementById(j + "," + i);
+function showMines(i, j, newClass) {
+    const cell = document.getElementById(j + "," + i);
 
     if(cell.value == "mine") {
         cell.classList.replace("cell", newClass);
     }
-    cell.onmousedown = start;
+    cell.onmousedown = setupGame;
 }
 
 const colors = ["#E5E8E8", "#2874A6", "#239B56",
@@ -173,8 +183,8 @@ function findColor(num) {
 
 //clean all the adjecent blank cells
 function cleanAround(x, y) {
-    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
-        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+    for(let i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(let j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
             const sideCell = document.getElementById(j + "," + i);
             if(sideCell.title == "none")
                 pressCell(j, i);
@@ -184,26 +194,22 @@ function cleanAround(x, y) {
 
 //solve the game
 function solve() {
-    var cell;
-
-    for(var i = 0; i < gamemode.height; i++) {
-        for(var j = 0; j < gamemode.width; j++) {
-            cell = document.getElementById(j+","+i);
+    for(let i = 0; i < gamemode.height; i++) {
+        for(let j = 0; j < gamemode.width; j++) {
+            const cell = document.getElementById(j+","+i);
             if(cell.value != "mine")
                 pressCell(j, i);
         }
     }
 }
 
-//checks if 
 function checkFlags(x, y) {
-    var centerCell = document.getElementById(x+","+y);
-    var sideCell;
-    var flagsAround = 0;
+    const centerCell = document.getElementById(x+","+y);
+    let flagsAround = 0;
 
-    for(var i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
-        for(var j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
-            sideCell = document.getElementById(j + "," + i);
+    for(let i = Math.max(0, y - 1); i <= Math.min(gamemode.height - 1, y + 1); i++) {
+        for(let j = Math.max(0, x - 1); j <= Math.min(gamemode.width - 1, x + 1); j++) {
+            const sideCell = document.getElementById(j + "," + i);
             if(sideCell.title == "flagged")
                 flagsAround++;
         }
@@ -212,26 +218,3 @@ function checkFlags(x, y) {
     if(parseInt(centerCell.value) == flagsAround)
         cleanAround(x, y);
 }
-
-document.getElementById("field").addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    
-    const cell = document.getElementById(e.target.id);
-    console.log(cell.title);
-    
-    if(cell.title == "pressed")
-        return;
-
-    if(cell.title == "none") {
-        cell.title = "flagged";
-        counter.innerHTML--;
-    }
-    else {
-        cell.title = "none";
-        counter.innerHTML++;
-    }
-
-    cell.disabled = !cell.disabled;
-    cell.classList.toggle("flagged");
-    console.log(cell.className);
-});
