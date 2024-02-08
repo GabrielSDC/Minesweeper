@@ -112,12 +112,14 @@ body {
 }
 
 .cell {
+    background: url('./img/none.png');
     color: #BFC9CA;
     background-color: #BFC9CA;
-    border-top: 2px solid #D5DBDB;
+    /* border-top: 2px solid #D5DBDB;
     border-left: 2px solid #babebe;
     border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1;
+    border-bottom: 2px solid #9ba1a1; */
+    border: none;
 }
 
 .cell:hover {
@@ -128,7 +130,8 @@ body {
 .pressed {
     background-color: #E5E8E8;
     color: #E5E8E8;
-    border: 1px solid #D5DBDB;
+    /* border: 1px solid #D5DBDB; */
+    border: none;
     padding: none;
     font-weight: 900;
 }
@@ -138,25 +141,27 @@ body {
 }
 
 .flagged {
-    background: url('./img/flag.png');
-    background-repeat: no-repeat;
+    background: url('./img/flag2.png');
+    /*background-repeat: no-repeat;
     background-color: #BFC9CA;
-    background-size: cover;
-    border-top: 2px solid #D5DBDB;
+    background-size: cover; */
+    border: none;
+    /* border-top: 2px solid #D5DBDB;
     border-left: 2px solid #babebe;
     border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1;
+    border-bottom: 2px solid #9ba1a1; */
 }
 
 .mined {
-    background: url('./img/mine.png');
-    background-repeat: no-repeat;
+    background: url('./img/mine2.png');
+    /* background-repeat: no-repeat;
     background-color: #BFC9CA;
-    background-size: cover;
-    border-top: 2px solid #D5DBDB;
+    background-size: cover; */
+    border: none;
+    /* border-top: 2px solid #D5DBDB;
     border-left: 2px solid #babebe;
     border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1;
+    border-bottom: 2px solid #9ba1a1; */
     /* border-bottom: 2px solid ; */
 }
 
