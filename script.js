@@ -1,13 +1,3 @@
-const dificulty = [
-    { height:  8, width: 10, totalMines: 10 },
-    { height: 14, width: 18, totalMines: 40 },
-    { height: 14, width: 32, totalMines: 99 }
-];
-
-let gamemode = dificulty[0];
-
-let game;
-
 window.onload = () => {
     const field = document.getElementById("field");
     const counter = document.getElementById("counter"); 
@@ -36,9 +26,20 @@ window.onload = () => {
     setupGame();
 };
 
+const dificulty = [
+    { height:  8, width: 10, totalMines: 10 },
+    { height: 14, width: 18, totalMines: 40 },
+    { height: 14, width: 32, totalMines: 99 }
+];
+
+let game;
+
 function setupGame() {
+    document.getElementById("start-button").innerHTML = "start";
+
     const select = document.getElementById("select-gamemode");
     game = new Field(dificulty[select.selectedIndex]);
+    game.state = "playing";
     
     const camp = document.getElementById("field");
     const counter = document.getElementById("counter");
@@ -60,25 +61,23 @@ function setupGame() {
 }
 
 function pressCell(x, y) {
-    if(game.isCellMined(y, x))
-        finish("lose");
+    if(game.state === "finished")
+        return;
 
     const pressedCell = game.getCell(y, x);
     
-    if(pressedCell.state === "pressed") {
+    if(game.isCellMined(y, x)) {
+        finish("lose");
+    }
+    else if(pressedCell.state === "pressed") {
         checkFlags(pressedCell);
     }
     else if(pressedCell.state === "none") {
-        console.log(pressedCell.minesAround);
-        const color = findColor(pressedCell.minesAround);
-
         const idCell = x + "," + y;
         const pressedElement = document.getElementById(idCell);
 
-        pressedElement.classList.replace("cell", "pressed");
-        if(pressedCell.minesAround > 0) {
-            pressedElement.innerHTML = `<p style='color:${color};'>${pressedCell.minesAround}</p>`; 
-        }
+        pressedElement.classList.replace("cell", "pressed"); 
+        pressedElement.innerHTML = `<img src="img/${pressedCell.minesAround}.png">`; 
         
         pressedCell.state = "pressed";
         game.emptyCells--;
@@ -104,6 +103,9 @@ function finish(end) {
     for(let i = 0; i < game.mines.length; i++) {
         showMines(game.mines[i].x, game.mines[i].y, newClass);
     }
+    
+    game.state = "finished";
+    document.getElementById("start-button").innerHTML = "restart";
 }
 
 function showMines(j, i, newClass) {
