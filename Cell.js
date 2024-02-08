@@ -6,18 +6,16 @@ class Cell {
         this.edges = [];
     }
 
-    addEdges(field, x, y, width) {
-        const curr = field.cells[y * width + x];
-        for(let i = y - 1; i < y + 1; i++) {
-            for(let j = x - 1; j < x + 1; j++) {
-                if(i === y && j === x) continue;
-                const newEdge = field.cells[i * width + j]
-                curr.edges.append(newEdge);
+    addEdges(field, x, y, w, h) {
+        for(let i = y - 1; i <= y + 1; i++) {
+            for(let j = x - 1; j <= x + 1; j++) {
+                if(i === y && j === x || i < 0 || j < 0 || i >= h || j >= w) continue;
+                
+                let newEdge = field.getCell(i, j);
+                if(newEdge) this.edges.push(newEdge);
             }
         }
-    }
-
-    isMined(cells, i, j) {
-        return cells[ij].isMined || false;
+        this.x = x;
+        this.y = y;
     }
 }
