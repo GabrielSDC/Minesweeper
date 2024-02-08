@@ -170,6 +170,7 @@ body {
     background-repeat: no-repeat;
     background-position: calc(50% + 25px) center;
     background-size: 30px;
+    width: 30px;
 }
 
 .center-buttons {
