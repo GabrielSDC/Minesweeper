@@ -8,12 +8,12 @@
 </head>
 <body class="container">
     <header class="header">
-        <h1 class="title">MINESWEEPER</h1> 
+        <h1>MINESWEEPER</h1>
     </header>
 
     <main class="main-content">
-        <div class="top-menu">
-            <div id="counter" class="counter"></div>
+        <section class="top-menu">
+            <p id="counter" class="counter"></p>
             <div id="center-buttons">
                 <select id="select-gamemode" class="select-gamemode">
                     <option value="easy">easy</option>
@@ -22,11 +22,11 @@
                 </select>
                 <button onclick="setupGame()" id="start-button" class="start-button">start</button>
             </div>
-        </div>
+        </section>
 
-        <div class="center">
+        <section class="center">
             <div class="field" id="field"></div>
-        </div>
+        </section>
     </main>
     <footer id="footer">
         <a id="github" href="https://github.com/GabrielSDC">by Gabriel Santos</a>
