@@ -18,4 +18,12 @@ class Cell {
             }
         }
     }
+
+    placeMine() {
+        this.isMined = true;
+        this.minesAround = 9;
+        for(let edge of this.edges) {
+            edge.minesAround++;
+        }
+    }
 }

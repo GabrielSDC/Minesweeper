@@ -25,21 +25,18 @@ class Field {
             }
         }
 
-        // find the position of the mines
-        for(let i = 0; i < info.totalMines;) {
-            const x = parseInt(Math.random() * info.width);
-            const y = parseInt(Math.random() * info.height);
-            
-            let cell = this.cells[y * info.width + x];
-            if(cell.isMined) continue;
-            
-            cell.isMined = true;
-            cell.minesAround = 9;
-            for(let i = 0; i < cell.edges.length; i++) {
-                cell.edges[i].minesAround++;
+        // place the mines into the field
+        for(let i = 0; i < info.totalMines; i++) {
+            let cell;
+            do {
+                const x = parseInt(Math.random() * info.width);
+                const y = parseInt(Math.random() * info.height);
+                cell = this.cells[y * info.width + x];
             }
+            while(cell.isMined);
+            
+            cell.placeMine();
             this.mines.push(cell);
-            i++;
         }
     }
 
