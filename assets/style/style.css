@@ -17,6 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-content: center;
 }
 
 .header {
@@ -24,16 +25,9 @@ body {
     justify-content: space-around;
     padding: 20px;
     box-shadow: 0 15px 13px -15px rgba(0,0,0,0.2);
-}
-
-/* .theme {
-    background: url("../img/dark-theme.png");
-    width: 100px;
-} */
-
-.title {
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 28px;
+    position: sticky;
+    top: 0px;
+    background-color: white;
 }
 
 .main-content {
@@ -48,6 +42,19 @@ body {
     flex-direction: row;
     justify-content: space-around;
     padding-bottom: 10px;
+
+    p {
+        padding: 10px;
+        padding-right: 35px;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+        background-image: url('../img/flag.png');
+        background-repeat: no-repeat;
+        background-position: calc(50% + 25px) center;
+        background-size: 30px;
+        width: 30px;
+    }
 }
 
 .top-menu > * {
@@ -103,6 +110,7 @@ body {
 .line {
     display: flex;
     flex-direction: row;
+    flex-wrap: no-wrap;
 }
 
 .line > * {
@@ -115,22 +123,12 @@ body {
     background: url('../img/none.png');
     color: #BFC9CA;
     background-color: #BFC9CA;
-    /* border-top: 2px solid #D5DBDB;
-    border-left: 2px solid #babebe;
-    border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1; */
     border: none;
-}
-
-.cell:hover {
-    background-color: #B2BABB;
-    color: #B2BABB;
 }
 
 .pressed {
     background-color: #E5E8E8;
     color: #E5E8E8;
-    /* border: 1px solid #D5DBDB; */
     border: none;
     padding: none;
     font-weight: 900;
@@ -142,40 +140,12 @@ body {
 
 .flagged {
     background: url('../img/flag2.png');
-    /*background-repeat: no-repeat;
-    background-color: #BFC9CA;
-    background-size: cover; */
     border: none;
-    /* border-top: 2px solid #D5DBDB;
-    border-left: 2px solid #babebe;
-    border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1; */
 }
 
 .mined {
     background: url('../img/mine2.png');
-    /* background-repeat: no-repeat;
-    background-color: #BFC9CA;
-    background-size: cover; */
     border: none;
-    /* border-top: 2px solid #D5DBDB;
-    border-left: 2px solid #babebe;
-    border-right: 2px solid #B2BABB;
-    border-bottom: 2px solid #9ba1a1; */
-    /* border-bottom: 2px solid ; */
-}
-
-.counter {
-    padding: 10px;
-    padding-right: 35px;
-    font-size: 30px;
-    display: flex;
-    justify-content: center;
-    background-image: url('../img/flag.png');
-    background-repeat: no-repeat;
-    background-position: calc(50% + 25px) center;
-    background-size: 30px;
-    width: 30px;
 }
 
 .center-buttons {
