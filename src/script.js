@@ -80,7 +80,7 @@ function pressCell(x, y) {
         const pressedElement = document.getElementById(idCell);
 
         pressedElement.classList.replace("cell", "pressed");
-        pressedElement.innerHTML = `<img src="../assets/img/${pressedCell.minesAround}.png">`;
+        pressedElement.innerHTML = `<img src="assets/img/${pressedCell.minesAround}.png">`;
 
         pressedCell.state = "pressed";
         game.emptyCells--;
