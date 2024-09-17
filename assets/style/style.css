@@ -35,6 +35,12 @@ body {
     margin: 0 auto;
     max-width: fit-content;
     padding-top: 0;
+
+    img {
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+    }
 }
 
 .top-menu {
